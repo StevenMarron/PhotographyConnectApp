@@ -19,7 +19,9 @@ const {
 } = require('./API/posts')
 
 const {
-    loginUser
+    loginUser,
+    registerUser
+    
 } = require('./API/users')
 
 
@@ -29,5 +31,6 @@ app.post('/posts', postOnePost);
 app.delete('/posts/:postId', deletePost);
 app.put('/posts/:postId', editPost);
 app.post('/login', loginUser);
+app.post('/register', registerUser);
 
 exports.api = functions.https.onRequest(app);
