@@ -50,6 +50,8 @@ exports.valRegister = function(data){
     if (data.password !== data.confirmPassword)
         errors.confirmPassword = "Passwords do not match";
     
+    if (blankCredential(data.occupation))
+        errors.occupation = "Please select your occupation";
     return {
         errors, 
         validated: Object.keys(errors).length === 0 ? true : false

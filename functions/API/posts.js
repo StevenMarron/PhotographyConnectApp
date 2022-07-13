@@ -73,6 +73,7 @@ exports.postOnePost = function(request, response){
             
             const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFilename}?alt=media`;
             const newPost = {
+                username: request.user.userFirstName +' '+ request.user.userLastName,
                 caption: request.body.caption,
                 imageUrl: imageUrl,
                 createdAt: new Date().toISOString()
@@ -103,7 +104,13 @@ exports.deletePost = function(request, response){
         if (!doc.exists){
             return response.status(404).json({error: "Post could not be found"})
         }
-        return document.delete();
+        if (doc.data().email !== request.user.email){
+            return response.status(403).json({error:"You are not authorized to delete this post"})
+        }
+        else{
+            return document.delete();            
+        }
+
     })
     .then(function(){
         response.json({message: "Deleted Post Successfully"});

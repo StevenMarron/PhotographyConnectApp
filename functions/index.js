@@ -1,5 +1,6 @@
 const functions = require('firebase-functions');
 const app = require('express')();
+const auth = require('./util/auth');
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
@@ -11,7 +12,8 @@ const app = require('express')();
 
 const {
     getAllPosts,
-    //getAllPosts is a function that will be used in the posts.js file
+    //getAllPosts is a function that will be used in the posts.js file to call all posts from all users
+    // for use on the home dashboard
     postOnePost,
     deletePost,
     editPost
@@ -20,17 +22,25 @@ const {
 
 const {
     loginUser,
-    registerUser
+    registerUser,
+    uploadUserImage,
+    getUserDetails,
+    updateUserDetails,
+    signOutUser
     
 } = require('./API/users')
 
 
-app.get('/posts', getAllPosts);
+app.get('/posts', auth, getAllPosts);
 //app is referring to 'express'
-app.post('/posts', postOnePost);
-app.delete('/posts/:postId', deletePost);
-app.put('/posts/:postId', editPost);
+app.post('/posts', auth, postOnePost);
+app.delete('/posts/:postId', auth, deletePost);
+app.put('/posts/:postId', auth, editPost);
 app.post('/login', loginUser);
 app.post('/register', registerUser);
+app.post('/user/image', auth, uploadUserImage);
+app.get('/user',auth, getUserDetails);
+app.post('/user/', auth, updateUserDetails);
+app.post('/signout', auth, signOutUser);
 
 exports.api = functions.https.onRequest(app);
