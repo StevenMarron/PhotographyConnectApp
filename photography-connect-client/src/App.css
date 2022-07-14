@@ -1,0 +1,72 @@
+body{
+  background-color:#565264;
+  color:white;
+}
+
+.login-form{
+  text-align: center;
+  background-color: #706677;
+  margin:auto;
+  margin-top:20px;
+  padding:20px;
+  border-radius: 10px;
+  width:80%;
+}
+
+.form-input{
+  margin:auto;
+  width:80%;
+}
+
+.navbar{
+  background-color:#A6808C ;
+}
+
+.btn{
+  background-color: #D6CFCB;
+  color:black;
+  outline: none !important;
+  margin:20px;
+}
+
+.btn:hover{
+  background-color: #CCB7AE;
+  color:white;
+}
+
+.centered{
+  text-align: center;
+  margin: auto;
+  width:50%;
+}
+
+.logged-out-home-hero{
+  background-image: url("images/home-hero.jpg");
+  width:100wh;
+  height:100vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.home-hero-content{
+  padding-top:10%;;
+
+}
+
+.home-hero-text{
+  background-color: #A6808C;
+  padding:20px;
+  border-radius: 10px;
+  overflow-wrap:break-word;
+  width:80%;
+}
+
+.footer{
+  background-color: #A6808C;
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  height:50px;
+}
