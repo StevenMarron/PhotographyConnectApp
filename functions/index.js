@@ -26,7 +26,8 @@ const {
     uploadUserImage,
     getUserDetails,
     updateUserDetails,
-    signOutUser
+    signOutUser,
+    getUsers
     
 } = require('./API/users')
 
@@ -39,8 +40,9 @@ app.put('/posts/:postId', auth, editPost);
 app.post('/login', loginUser);
 app.post('/register', registerUser);
 app.post('/user/image', auth, uploadUserImage);
-app.get('/user',auth, getUserDetails);
-app.post('/user/', auth, updateUserDetails);
+app.get('/user', auth, getUserDetails);
+app.post('/user', auth, updateUserDetails);
 app.post('/signout', auth, signOutUser);
+app.get('/users', auth, getUsers);
 
 exports.api = functions.https.onRequest(app);

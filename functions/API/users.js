@@ -78,13 +78,14 @@ exports.registerUser = function(request, response){
             instaLink: newUser.instaLink,
             createdAt: new Date().toISOString()
         };
-        return db.doc(`/users/${newUser.email}`).set(userCred);
+        return db.doc(`/users/${userCred.email}`).set(userCred);
     })
     .then(function(){
         return response.status(201).json({token});
     })
 }
 
+//UPLOAD USER PROFILE IMAGE
 exports.uploadUserImage = function (request, response){
     const BusBoy = require('busboy');
     const path = require('path');
@@ -166,4 +167,28 @@ exports.signOutUser = function(request, response){
         console.error(error);
         return response.status(401).json({message: "Could not log out"});
     });   
+}
+
+//GET USERS
+exports.getUsers = function (request, response){
+    db.collection('users').get().then(
+        function(data){
+            let users = [];
+            data.forEach(function(doc){
+                users.push({
+                    firstName: doc.data().firstName,
+                    lastName: doc.data().lastName,
+                    bio: doc.data().bio,
+                    userImageUrl: doc.data().userImageUrl,
+                    facebookLink: doc.data().facebookLink,
+                    instaLink: doc.data().instaLink
+                });
+            });
+            return response.json(users);
+        }
+    )
+    .catch(function(error){
+        console.error(error);
+        return response.status(500).json({error: error.code, message:"500:Internal server error"});
+    });
 }
