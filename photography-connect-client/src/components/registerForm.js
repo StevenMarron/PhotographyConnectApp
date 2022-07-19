@@ -1,52 +1,144 @@
-import React from "react";
+import React, {useState} from "react";
 import "../App.css";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+import axios from "axios";
 
 function RegisterForm(){
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+    const [occupation, setOccupation] = useState('')
+    const [bio, setBio] = useState('')
+    const [facebookLink, setFacebookLink] = useState('')
+    const [instaLink, setInstaLink] = useState('')
+    const [data, setData] = useState('')
+    const [loggedIn, setLoggedIn] = useState(false)
+
+    function handleFirstNameInput(e){
+        e.preventDefault()
+        setFirstName(e.target.value)
+    }
+
+    function handleLastNameInput(e){
+        e.preventDefault()
+        setLastName(e.target.value)
+    }
+
+    function handleEmailInput(e){
+        e.preventDefault()
+        setEmail(e.target.value)
+    }
+
+    function handlePasswordInput(e){
+        e.preventDefault()
+        setPassword(e.target.value)
+    }
+
+    function handleConfirmPasswordInput(e){
+        e.preventDefault()
+        setConfirmPassword(e.target.value)
+    }
+
+    function handleOccupationInput(e){
+        e.preventDefault()
+        setOccupation(e.target.value)
+    }
+
+    function handleBioInput(e){
+        e.preventDefault()
+        setBio(e.target.value)
+    }
+
+    function handleFacebookLinkInput(e){
+        e.preventDefault()
+        setFacebookLink(e.target.value)
+    }
+
+    function handleInstaLinkInput(e){
+        e.preventDefault()
+        setInstaLink(e.target.value)
+    }
+
+    async function handleSubmit(e){
+        e.preventDefault()
+        console.log(firstName, lastName, occupation, email, password, confirmPassword, bio, facebookLink, instaLink)
+        try{
+            var data = await axios.post("http://localhost:5000/photographyconnect-61141/us-central1/api/register",{
+                userFirstName: firstName,
+                userLastName: lastName,
+                occupation: occupation,
+                email: email,
+                password: password,
+                confirmPassword: confirmPassword,
+                bio: bio,
+                facebookLink: facebookLink,
+                instaLink: instaLink
+            }).then(function(response){
+                sessionStorage.setItem('AuthToken', `Bearer ${response.data.token}`)
+                console.log(response.data.token)
+                setLoggedIn(true)
+            })
+            setData(data)
+        }
+        catch(e){
+            if(e.response.status === 400){
+              console.log("An error occurred!")  
+            }
+        }
+    }
+
+    if(loggedIn){
+        return(
+            <Navigate replace to="/" />
+        )
+    }
+    else{
     return( 
         <div>
             <form className="form-input">
-                <div class="input-group mb-3">
-                    <input type="text" placeholder="First Name" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
+                <div className="input-group mb-3">
+                    <input type="text" placeholder="First Name" value={firstName} onChange={handleFirstNameInput} className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
                 </div>
 
-                <div class="input-group mb-3">
-                    <input type="text" placeholder="Last Name" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
+                <div className="input-group mb-3">
+                    <input type="text" placeholder="Last Name" value={lastName} onChange={handleLastNameInput} className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
                 </div>  
 
-                <div class="input-group mb-3">
-                    <input type="text" placeholder="Email" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
+                <div className="input-group mb-3">
+                    <input type="text" placeholder="Email" value={email} onChange={handleEmailInput} className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
                 </div>   
 
-                <div class="input-group mb-3">
-                    <input type="password" placeholder="Password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
+                <div className="input-group mb-3">
+                    <input type="password" placeholder="Password" value={password} onChange={handlePasswordInput} className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
                 </div> 
 
-                <div class="input-group mb-3 ">
-                    <input type="password" placeholder="Confirm Password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
+                <div className="input-group mb-3 ">
+                    <input type="password" placeholder="Confirm Password" value={confirmPassword} onChange={handleConfirmPasswordInput} className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
                 </div>
 
-                <div class="input-group mb-3">
-                    <select class="form-select" id="inputGroupSelect02">
-                        <option selected>Please Select Your Occupation..</option>
-                        <option value="photographer">Photographer</option>
-                        <option value="model">Model</option>
+                <div className="input-group mb-3">
+                    <select value={occupation} onChange={handleOccupationInput} className="form-select" id="inputGroupSelect02">
+                        <option defaultValue>Please Select Your Occupation..</option>
+                        <option value="Photographer">Photographer</option>
+                        <option value="Model">Model</option>
                     </select>
                 </div>
 
-                <div class="input-group mb-3">
-                    <textarea placeholder="Bio" class="form-control" aria-label="With textarea"></textarea>
+                <div className="input-group mb-3">
+                    <textarea  value={bio} onChange={handleBioInput} placeholder="Bio" className="form-control" aria-label="With textarea"></textarea>
                 </div> 
 
-                <div class="input-group mb-3">
-                    <input type="text" placeholder="Facebook URL" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
+                <div className="input-group mb-3">
+                    <input type="text" placeholder="Facebook URL" value={facebookLink} onChange={handleFacebookLinkInput} className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
                 </div>  
 
-                <div class="input-group mb-3">
-                    <input type="text" placeholder="Instagram URL" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
+                <div className="input-group mb-3">
+                    <input type="text" placeholder="Instagram URL" value={instaLink} onChange={handleInstaLinkInput} className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
                 </div>
                                                     
-                <button class="btn" type="submit">Submit</button>          
+                <button onClick={handleSubmit} className="btn" type="submit">Submit</button>          
                 
             </form>
             <div>
@@ -54,6 +146,7 @@ function RegisterForm(){
             </div>    
         </div>          
     )
+    }
 }
 
 export default RegisterForm;
