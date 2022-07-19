@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 function Footer(){
 	return(
-		<footer className="container-fluid footer">
+		<footer className="footer">
 				<div className="row centered">
 					<div className="col-lg-12">
 						<p>&copy;Photography Connect</p>
