@@ -1,6 +1,7 @@
 const {db, admin} = require('../util/admin');
 const firebase = require('firebase');
 const config = require('../util/config');
+const cors = require('cors')({origin: true});
 
 firebase.initializeApp(config);
 
@@ -68,14 +69,14 @@ exports.registerUser = function(request, response){
         token=idToken;
         const userCred = {
             userId,
-            firstName: newUser.userFirstName,
-            lastName: newUser.userLastName,
-            occupation: newUser.occupation,
-            email: newUser.email,
+            firstName: request.body.userFirstName,
+            lastName: request.body.userLastName,
+            occupation: request.body.occupation,
+            email: request.body.email,
             userImageUrl: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/Default-User-Image.jpg?alt=media`,
-            bio: newUser.bio,
-            facebookLink: newUser.facebookLink,
-            instaLink: newUser.instaLink,
+            bio: request.body.bio,
+            facebookLink: request.body.facebookLink,
+            instaLink: request.body.instaLink,
             createdAt: new Date().toISOString()
         };
         return db.doc(`/users/${userCred.email}`).set(userCred);
@@ -83,6 +84,7 @@ exports.registerUser = function(request, response){
     .then(function(){
         return response.status(201).json({token});
     })
+  
 }
 
 //UPLOAD USER PROFILE IMAGE
@@ -97,7 +99,7 @@ exports.uploadUserImage = function (request, response){
     let imageForUpload = {};
 
     busboy.on('file', function(fieldname, file, filename, encoding, mimetype){
-        if (mimetype !== 'image/jpeg'){
+        if (mimetype !== 'image/jpg'){
             return response.status(400).json({ error: "Uploads must be .jpeg file type"});
         }
 

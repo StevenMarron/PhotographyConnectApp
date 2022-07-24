@@ -16,16 +16,12 @@ function UploadProfileImage(){
         e.preventDefault()
         try{
             const token=sessionStorage.getItem("AuthToken")
-            const config={
-                    headers:{
-                    'Authorization' : `${token}`,
-                    'Content-Type': `multipart/form-data`
-                }
-            }
             const formData = new FormData();
-            formData.append('file', userImage)
-            var data = await axios.post("http://localhost:5000/photographyconnect-61141/us-central1/api/user/image",
-            config, formData)
+            formData.append("file", userImage)
+            var data = await axios.post("http://localhost:5000/photographyconnect-61141/us-central1/api/user/image", formData, {headers:{
+                    'Authorization' : `${token}`,
+                    'Content-Type' : `multipart/form-data`
+                }})
             .then(function(){
                 setImageUpdated(true)
             })              
@@ -48,7 +44,7 @@ function UploadProfileImage(){
             <div className="login-form">
                 <form className="form-input login-form">
                     <div>
-                        <label className="form-label">Please choose an image..</label>
+                        <label className="form-label">Please choose an image.. <br></br>(Image must be .jpeg and under 10mb)</label>
                         <input onChange={handleImageInput} className="form-control form-control-lg" id="formFileLg" type="file"/>
                     </div>
                                                         

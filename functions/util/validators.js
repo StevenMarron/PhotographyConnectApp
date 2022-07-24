@@ -1,5 +1,5 @@
 const blankCredential = function(string){
-    if (string.trim() === '') 
+    if (string === '') 
         return true;
     else
         return false;

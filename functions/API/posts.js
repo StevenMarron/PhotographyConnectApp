@@ -20,6 +20,9 @@ exports.getAllPosts = function(request, response){
             data.forEach(function(doc){
                 posts.push({
                     postId: doc.id,
+                    userId: doc.data().userId,
+                    userFirstName: doc.data().userFirstName,
+                    userLastName: doc.data().userLastName,
                     caption: doc.data().caption,
                     imageUrl: doc.data().imageUrl,
                     createdAt: doc.data().createdAt
@@ -34,6 +37,30 @@ exports.getAllPosts = function(request, response){
     });
 } 
 
+exports.getAllUserPosts = function(request, response){
+
+    db.collection('posts').where('userId', '==', request.user.uid).orderBy('createdAt', 'desc').get().then(
+        function(data){
+            let posts = [];
+            data.forEach(function(doc){
+                posts.push({
+                    postId: doc.id,
+                    userId: doc.data().userId,
+                    userFirstName: doc.data().userFirstName,
+                    userLastName: doc.data().userLastName,
+                    caption: doc.data().caption,
+                    imageUrl: doc.data().imageUrl,
+                    createdAt: doc.data().createdAt
+                });
+            });
+            return response.json(posts);
+        }
+    )
+    .catch(function(error){
+        console.error(error);
+        return response.status(500).json({error: error.code, message:"500:Internal server error"});
+    });
+} 
 //Create new post 
 //TODO add if statement for empty imageUrl
 exports.postOnePost = function(request, response){
@@ -73,7 +100,9 @@ exports.postOnePost = function(request, response){
             
             const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFilename}?alt=media`;
             const newPost = {
-                username: request.user.userFirstName +' '+ request.user.userLastName,
+                userFirstName: request.user.userFirstName,
+                userLastName: request.user.userLastName,
+                userId: request.user.userId,
                 caption: request.body.caption,
                 imageUrl: imageUrl,
                 createdAt: new Date().toISOString()

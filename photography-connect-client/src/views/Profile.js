@@ -4,6 +4,7 @@ import axios from "axios";
 import FacebookImage from "../images/Facebook-logo.png";
 import InstaImage from "../images/Instagram-logo.png";
 import {Link} from "react-router-dom";
+import UserPostAPI from "../components/UserPostAPI";
 
 function Profile(){
     const [firstName, setFirstName] = useState('')
@@ -32,7 +33,7 @@ function Profile(){
                 setFacebookLink(response.data.userCred.facebookLink)
                 setInstaLink(response.data.userCred.instaLink)
                 setUserImage(response.data.userCred.userImageUrl)
-            console.log(response.data);               
+            // console.log(response.data);               
             })
         }
         getUserDetails()
@@ -59,7 +60,7 @@ function Profile(){
                             <p>
                                 Social Links:
                                 <a className="social-link" href={instaLink} target="_blank" rel="noreferrer noopener">
-                                    <img src={InstaImage} className="img-fluid mx-auto" width="50px" alt="" />                                
+                                    <img src={InstaImage} className="img-fluid mx-auto" width="30px" alt="Instagram Link" />                                
                                 </a>                            
                             </p>
                             <button className="btn">
@@ -78,7 +79,7 @@ function Profile(){
                 </div>
                 <div className="row profile-posts">
                     <div className="col-lg-12 col-sm-12">
-                        <h1>Posts will go here</h1>
+                        <UserPostAPI/>
                         
                     </div>
                 </div>
@@ -107,7 +108,7 @@ function Profile(){
                             <p>
                                 Social Links:
                                 <a className="social-link" href={facebookLink} target="_blank" rel="noreferrer noopener">
-                                    <img src={FacebookImage} className="img-fluid mx-auto" width="50px" alt="" />                                
+                                    <img src={FacebookImage} className="img-fluid mx-auto" width="30px" alt="Facebook Link" />                                
                                 </a>                          
                             </p>
                             <button className="btn">
@@ -126,7 +127,7 @@ function Profile(){
                 </div>
                 <div className="row profile-posts">
                     <div className="col-lg-12 col-sm-12">
-                        <h1>Posts will go here</h1>
+                        <UserPostAPI/>
                         
                     </div>
                 </div>
@@ -171,7 +172,7 @@ function Profile(){
                 </div>
                 <div className="row profile-posts">
                     <div className="col-lg-12 col-sm-12">
-                        <h1>Posts will go here</h1>
+                        <UserPostAPI/>
                         
                     </div>
                 </div>
@@ -200,10 +201,10 @@ function Profile(){
                             <p>
                                 Social Links:
                                 <a className="social-link" href={facebookLink} target="_blank" rel="noreferrer noopener">
-                                    <img src={FacebookImage} className="img-fluid mx-auto" width="50px" alt="" />                                
+                                    <img src={FacebookImage} className="img-fluid mx-auto" width="30px" alt="Facebook Link" />                                
                                 </a>
                                 <a className="social-link" href={instaLink} target="_blank" rel="noreferrer noopener">
-                                    <img src={InstaImage} className="img-fluid mx-auto" width="50px" alt="" />                                
+                                    <img src={InstaImage} className="img-fluid mx-auto" width="30px" alt="Instagram Link" />                                
                                 </a>                            
                             </p>
                             <button className="btn">
@@ -222,7 +223,7 @@ function Profile(){
                 </div>
                 <div className="row profile-posts">
                     <div className="col-lg-12 col-sm-12">
-                        <h1>Posts will go here</h1>
+                        <UserPostAPI/>
                         
                     </div>
                 </div>

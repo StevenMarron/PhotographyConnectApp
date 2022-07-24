@@ -17,6 +17,7 @@ const {
     getAllPosts,
     //getAllPosts is a function that will be used in the posts.js file to call all posts from all users
     // for use on the home dashboard
+    getAllUserPosts,
     postOnePost,
     deletePost,
     editPost
@@ -36,6 +37,7 @@ const {
 
 
 app.get('/posts', auth, getAllPosts);
+app.get('/user/posts', auth, getAllUserPosts);
 //app is referring to 'express'
 app.post('/posts', auth, postOnePost);
 app.delete('/posts/:postId', auth, deletePost);
