@@ -3,7 +3,7 @@ import "../App.css";
 import axios from 'axios';
 import Post from './Post';
 
-function PostAPI(){
+function UserPostAPI(){
     const [posts, setPosts] = useState([]);
 
     useEffect(function(){
@@ -14,7 +14,7 @@ function PostAPI(){
                     Authorization : `${token}` 
                 }
             }
-            var data = await axios.get("http://localhost:5000/photographyconnect-61141/us-central1/api/posts", config)
+            var data = await axios.get("http://localhost:5000/photographyconnect-61141/us-central1/api/user/posts", config)
             .then(function(response){
             setPosts([response.data])
             // console.log([response.data]);                      
@@ -32,14 +32,14 @@ function PostAPI(){
                     {i.map(function(j,index){
                         return(
                             <div key={index}>
-                        <Post 
-                            userFirstName={i[index].userFirstName}
-                            userLastName={i[index].userLastName}
-                            userId={i[index].userId}
-                            imageUrl={i[index].imageUrl}
-                            caption={i[index].caption}
-                        />
-                        </div>    
+                                <Post 
+                                    userFirstName={i[index].userFirstName}
+                                    userLastName={i[index].userLastName}
+                                    userId={i[index].userId}
+                                    imageUrl={i[index].imageUrl}
+                                    caption={i[index].caption}
+                                />   
+                            </div>
                         )
                     })}                              
                 </div>
@@ -49,4 +49,4 @@ function PostAPI(){
     )
 }
 
-export default PostAPI;
+export default UserPostAPI;

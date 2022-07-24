@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from "react";
 import "../App.css";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function LoginForm(){
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [data, setData] = useState('')
-    const [logIn, setLoggedIn] = useState(false)
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [logIn, setLogIn] = useState(false);
+    let history = useNavigate();
 
     function handleEmailInput(e){
         e.preventDefault()
@@ -29,9 +29,10 @@ function LoginForm(){
             }).then(function(response){
                 sessionStorage.setItem('AuthToken', `Bearer ${response.data.token}`)
                 console.log(response.data.token)
-                setLoggedIn(true)
+                setLogIn(true)
+                history('/')
+                console.log(logIn)
             })
-            setData(data)
         }
         catch(e){
             if(e.response.status === 400){
@@ -40,14 +41,6 @@ function LoginForm(){
         }
     }
 
-    if(logIn){
-        return(
-            <div>
-                <Navigate replace to="/" />               
-            </div>
-        )
-    }
-    else{
     return(
         <div>
             <form className="form-input">
@@ -64,7 +57,6 @@ function LoginForm(){
             </div>              
         </div>         
     )        
-    }
 }
 
 export default LoginForm;

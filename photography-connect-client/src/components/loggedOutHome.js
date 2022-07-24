@@ -15,10 +15,11 @@ function LoggedOutHome(){
                     relationships
                     </p>
                         <button className="btn btn-lg">
-                            <Link to="/login" className="nav-link">Login</Link>
+                            <Link to="/login" className="nav-link-home">Login</Link>
+                            
                         </button> 
                         <button className="btn btn-lg">
-                            <Link to="/register" className="nav-link">Register</Link>
+                            <Link to="/register" className="nav-link-home">Register</Link>
                         </button>  
                 </div>
             </div>

@@ -8,10 +8,10 @@ import Register from "./views/Register";
 import Footer from "./components/Footer";
 import Profile from "./views/Profile";
 import EditProfile from './components/editProfile';
-import axios from 'axios';
 import UploadProfileImage from './components/UploadProfileImage';
+import axios from 'axios';
 
-function App() {
+function App(props) {
   const [loggedIn, setLoggedIn] = useState(false)
 
   useEffect(function(){
@@ -25,7 +25,27 @@ function App() {
       }
   }
   tokenCheck()
-  })
+  },[props.logIn])
+
+  // useEffect(function(){
+  //   async function getUserDetails(){
+  //       const token=sessionStorage.getItem("AuthToken")
+  //       const config={
+  //            headers:{
+  //               Authorization : `${token}` 
+  //           }
+  //       }
+  //       var data = await axios.get("http://localhost:5000/photographyconnect-61141/us-central1/api/user", config)
+  //       if(data.status === 200){
+  //         setLoggedIn(true)          
+  //       }
+  //       else{
+  //         setLoggedIn(false)          
+  //       }
+  //       // console.log(response.data);               
+  //   }
+  //   getUserDetails()
+  //   })
 
   // useEffect(function(){
   //   async function tokenCheck(){
