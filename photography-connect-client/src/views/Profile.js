@@ -39,7 +39,7 @@ function Profile(){
         getUserDetails()
         },[])
 
-    if(instaLink != "" && facebookLink == ""){
+    if(instaLink !== "" && facebookLink === ""){
         return(
             <div className="container-fluid profile-page">
                 <div className="row">
@@ -87,7 +87,7 @@ function Profile(){
     
         )
     }
-    else if(instaLink == "" && facebookLink != ""){
+    else if(instaLink === "" && facebookLink !== ""){
         return(
             <div className="container-fluid profile-page">
                 <div className="row">
@@ -135,7 +135,7 @@ function Profile(){
     
         )
     }
-    else if(instaLink == "" && facebookLink == ""){
+    else if(instaLink === "" && facebookLink === ""){
         return(
             <div className="container-fluid profile-page">
                 <div className="row">

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import "../App.css";
-import { Link, Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import axios from "axios";
 
 function EditProfile(){

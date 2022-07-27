@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 import "../App.css";
 import { Navigate } from "react-router-dom";
 import axios from "axios";
@@ -20,7 +20,7 @@ function UploadProfileImage(){
             formData.append("file", userImage)
             var data = await axios.post("http://localhost:5000/photographyconnect-61141/us-central1/api/user/image", formData, {headers:{
                     'Authorization' : `${token}`,
-                    'Content-Type' : `multipart/form-data`
+                    'Accept' : `multipart/form-data`
                 }})
             .then(function(){
                 setImageUpdated(true)

@@ -133,7 +133,7 @@ exports.deletePost = function(request, response){
         if (!doc.exists){
             return response.status(404).json({error: "Post could not be found"})
         }
-        if (doc.data().email !== request.user.email){
+        if (doc.data().userId !== request.user.uid){
             return response.status(403).json({error:"You are not authorized to delete this post"})
         }
         else{
@@ -156,7 +156,14 @@ exports.editPost = function(request, response){
         response.status(403).json({message:"Cannot be changed"});
     }
     let document = db.collection('posts').doc(request.params.postId);
-    document.update(request.body)
+    document.get().then(function(doc){
+        if (doc.data().userId !== request.user.uid){
+            return response.status(403).json({error:"You are not authorized to edit this post"})
+        }
+        else{
+            document.update(request.body)            
+        }
+    })
     .then(function(){
         response.json({message:"Post updated successfully"});
     })
@@ -165,3 +172,40 @@ exports.editPost = function(request, response){
         return response.status(500).json({error: error.code, message:"500:Internal server error"});
     });
 }
+
+//GET POST
+exports.getPost = function(request, response){
+//     let postData= {};
+//     db.doc(`/posts/${request.body.postId}`).get()
+//     .then(function(doc){
+//         if(doc.exists){
+//             // userData.userCred=doc.data();
+//             return response.json(postData);
+//         }     
+//     })
+//     .catch(function(error){
+//         console.error(error);
+//         return response.status(500).json({message: "Could not get post data"});
+//     });
+// }
+
+    const document = db.doc(`/posts/${request.params.postId}`);
+        document.get().then(function(doc){
+            let post = [{}];
+                // return response.json(doc.id)
+                post.push({
+                    postId: doc.id,
+                    userId: doc.data().userId,
+                    userFirstName: doc.data().userFirstName,
+                    userLastName: doc.data().userLastName,
+                    caption: doc.data().caption,
+                    imageUrl: doc.data().imageUrl,
+                    createdAt: doc.data().createdAt
+                });
+            return response.json(post);
+            })
+            .catch(function(error){
+                console.error(error);
+                    return response.status(500).json({error: error.code, message:"500:Internal server error"});
+    });
+} 
