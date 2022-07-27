@@ -5,7 +5,21 @@ import PCLogo from "../images/Photography-Connect-Logo.png";
 
 function Navbar(props){
 
-    if(props.loggedIn){
+    const [loggedIn, setLoggedIn] = useState(false)
+
+    useEffect(function(){
+        async function tokenCheck(){
+          if(props.loggedIn === true){
+            setLoggedIn(true)
+          }
+            else{
+            setLoggedIn(false)
+          }
+      }
+      tokenCheck()
+      },[props.loggedIn])
+
+    if(loggedIn){
         return(
             <header className="container-fluid">
                 <div className="row">

@@ -20,7 +20,8 @@ const {
     getAllUserPosts,
     postOnePost,
     deletePost,
-    editPost
+    editPost,
+    getPost
 
 } = require('./API/posts')
 
@@ -39,9 +40,10 @@ const {
 app.get('/posts', auth, getAllPosts);
 app.get('/user/posts', auth, getAllUserPosts);
 //app is referring to 'express'
-app.post('/posts', auth, postOnePost);
-app.delete('/posts/:postId', auth, deletePost);
-app.put('/posts/:postId', auth, editPost);
+app.post('/post', auth, postOnePost);
+app.delete('/post/:postId', auth, deletePost);
+app.get('/post/:postId',auth, getPost);
+app.post('/post/:postId', auth, editPost);
 app.post('/login', loginUser);
 app.post('/register', registerUser);
 app.post('/user/image', auth, uploadUserImage);

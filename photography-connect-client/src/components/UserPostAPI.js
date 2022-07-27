@@ -38,6 +38,7 @@ function UserPostAPI(){
                                     userId={i[index].userId}
                                     imageUrl={i[index].imageUrl}
                                     caption={i[index].caption}
+                                    postId={i[index].postId}
                                 />   
                             </div>
                         )

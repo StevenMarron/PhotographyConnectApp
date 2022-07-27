@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 import "../App.css";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function LoginForm(){
@@ -31,7 +31,6 @@ function LoginForm(){
                 console.log(response.data.token)
                 setLogIn(true)
                 history('/')
-                console.log(logIn)
             })
         }
         catch(e){
