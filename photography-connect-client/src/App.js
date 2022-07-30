@@ -10,18 +10,18 @@ import Profile from "./views/Profile";
 import EditProfile from './components/editProfile';
 import UploadProfileImage from './components/UploadProfileImage';
 import EditPost from "./components/EditPost";
+import Logout from "./components/Logout";
 import axios from 'axios';
 
-function App(props) {
+function App() {
   const [loggedIn, setLoggedIn] = useState(false)
-  const [homeLoggedIn, setHomeLoggedIn] = useState(false)
+  const [currentUser, setCurrentUser] = useState()
+  const [selectedUser, setSelectedUser] = useState("Random user input")
 
-  const checkHomeLogIn= function checkHomeLogIn(homeLoggedIn){
-    console.log(homeLoggedIn)
-  }
 
   useEffect(function(){
     function tokenCheck(){
+      // console.log(currentUser)
       const token=sessionStorage.getItem("AuthToken")
       if(token){
         setLoggedIn(true)
@@ -31,19 +31,19 @@ function App(props) {
       }
   }
   tokenCheck()
-  },[props.homeLoggedIn])
+  },[])
 
   return (
     <Router>
       <div className="container-fluid">
       <Navbar loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
       <Routes>
-        <Route path='/' element={<Home checkHomeLogIn={checkHomeLogIn} loggedIn={loggedIn} setLoggedIn={setLoggedIn} />}/>
-        <Route path='/login' element={<Login loggedIn={loggedIn} setLoggedIn={setLoggedIn} />}/>
+        <Route path='/' element={<Home loggedIn={loggedIn} setLoggedIn={setLoggedIn} />}/>
+        <Route path='/login' element={<Login loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>}/>
         <Route path='/register' element={<Register loggedIn={loggedIn} setLoggedIn={setLoggedIn} />}/>
-        <Route path='/login' element={<Login loggedIn={loggedIn} setLoggedIn={setLoggedIn} />}/>
-        <Route path='/profile' element={<Profile/>}/>
-        <Route path='/profile/edit' element={<EditProfile/>}/>
+        <Route path='/logout' element={<Logout loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>}/>
+        <Route path='/profile/:userId' element={<Profile selectedUser={selectedUser} setSelectedUser={setSelectedUser}/>}/>
+        <Route path='/profile/edit/:userId' element={<EditProfile/>}/>
         <Route path='/profile/uploadprofileimage' element={<UploadProfileImage/>}/>
         <Route path='/profile/post/edit/:postId' element={<EditPost />}/>
       </Routes>

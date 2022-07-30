@@ -28,10 +28,29 @@ function DeletePost(props){
 
     return( 
         <div>
-            <div>
-                Are you sure you want to delete this post?
+            <button type="button" className="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Delete
+            </button>
+            
+            <div className="modal fade" id="exampleModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog" role="document">
+                    <div className="modal-content">
+                    <div className="modal-header">
+                        <h5 className="modal-title" id="exampleModalLabel"></h5>
+                        <button type="button" className="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div className="modal-body">
+                        Are you sure you want to delete this post?
+                    </div>
+                    <div className="modal-footer">
+                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" onClick={handleSubmit} className="btn btn-primary">Delete</button>
+                    </div>
+                    </div>
+                </div>
             </div>
-            <button onClick={handleSubmit} className="btn" type="submit">Yes, delete it</button>       
         </div>          
     )        
 }

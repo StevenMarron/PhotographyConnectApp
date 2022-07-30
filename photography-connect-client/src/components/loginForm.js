@@ -3,7 +3,7 @@ import "../App.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-function LoginForm(){
+function LoginForm(props){
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [logIn, setLogIn] = useState(false);
@@ -22,22 +22,25 @@ function LoginForm(){
 
     async function handleSubmit(e){
         e.preventDefault()
-        try{
+        // try{
             var data = await axios.post("http://localhost:5000/photographyconnect-61141/us-central1/api/login",{
                 email: email,
                 password: password
             }).then(function(response){
                 sessionStorage.setItem('AuthToken', `Bearer ${response.data.token}`)
                 console.log(response.data.token)
+                props.checkLogIn(true)
                 setLogIn(true)
+                
+            }).then(function(){
                 history('/')
-            })
-        }
-        catch(e){
-            if(e.response.status === 400){
-              console.log("An error occurred")  
-            }
-        }
+            })                
+        // }
+        // catch(e){
+        //     if(e.response.status === 400){
+        //       console.log("An error occurred")  
+        //     }
+        // }
     }
 
     return(

@@ -39,7 +39,7 @@ exports.getAllPosts = function(request, response){
 
 exports.getAllUserPosts = function(request, response){
 
-    db.collection('posts').where('userId', '==', request.user.uid).orderBy('createdAt', 'desc').get().then(
+    db.collection('posts').where('userId', '==', request.params.userId).orderBy('createdAt', 'desc').get().then(
         function(data){
             let posts = [];
             data.forEach(function(doc){

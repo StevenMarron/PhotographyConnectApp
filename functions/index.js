@@ -38,7 +38,7 @@ const {
 
 
 app.get('/posts', auth, getAllPosts);
-app.get('/user/posts', auth, getAllUserPosts);
+app.get('/user/posts/:userId', auth, getAllUserPosts);
 //app is referring to 'express'
 app.post('/post', auth, postOnePost);
 app.delete('/post/:postId', auth, deletePost);
@@ -47,9 +47,9 @@ app.post('/post/:postId', auth, editPost);
 app.post('/login', loginUser);
 app.post('/register', registerUser);
 app.post('/user/image', auth, uploadUserImage);
-app.get('/user', auth, getUserDetails);
-app.post('/user', auth, updateUserDetails);
-app.post('/signout', auth, signOutUser);
+app.get('/user/:userId', auth, getUserDetails);
+app.post('/user/:userId', auth, updateUserDetails);
+app.post('/logout', auth, signOutUser);
 app.get('/users', auth, getUsers);
 
 exports.api = functions.https.onRequest(app);
