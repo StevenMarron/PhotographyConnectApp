@@ -1,9 +1,11 @@
 import React, {useState, useEffect} from "react";
 import "../App.css";
-import { Navigate } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 function EditProfile(){
+    const params = useParams();
+    const userId= params.userId;
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [occupation, setOccupation] = useState('')
@@ -50,7 +52,7 @@ function EditProfile(){
                     Authorization : `${token}` 
                 }
             }
-            var data = await axios.get("http://localhost:5000/photographyconnect-61141/us-central1/api/user", config)
+            var data = await axios.get(`http://localhost:5000/photographyconnect-61141/us-central1/api/user/${userId}`, config)
             .then(function(response){
                 setFirstName(response.data.userCred.firstName)
                 setLastName(response.data.userCred.lastName)
@@ -74,7 +76,7 @@ function EditProfile(){
                     Authorization : `${token}` 
                 }
             }
-            var data = await axios.post("http://localhost:5000/photographyconnect-61141/us-central1/api/user",
+            var data = await axios.post(`http://localhost:5000/photographyconnect-61141/us-central1/api/user/${userId}`,
             {
                 firstName: firstName,
                 lastName: lastName,
@@ -98,7 +100,7 @@ function EditProfile(){
 
     if(bioUpdated){
         return(
-            <Navigate replace to="/profile"/>            
+            <Navigate replace to={`/profile/${userId}`}/>            
         )
     }
     else{

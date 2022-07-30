@@ -2,24 +2,14 @@ import React, {useState, useEffect} from "react";
 import "../App.css";
 import { Link } from "react-router-dom";
 import PCLogo from "../images/Photography-Connect-Logo.png";
+import jwt_decode from "jwt-decode";
 
 function Navbar(props){
+    const token=sessionStorage.getItem("AuthToken")
+    const decodedToken= jwt_decode(token);
+    const currentUser = decodedToken.user_id;
 
-    const [loggedIn, setLoggedIn] = useState(false)
-
-    useEffect(function(){
-        async function tokenCheck(){
-          if(props.loggedIn === true){
-            setLoggedIn(true)
-          }
-            else{
-            setLoggedIn(false)
-          }
-      }
-      tokenCheck()
-      },[props.loggedIn])
-
-    if(loggedIn){
+    if(props.loggedIn){
         return(
             <header className="container-fluid">
                 <div className="row">
@@ -37,11 +27,14 @@ function Navbar(props){
                                         <Link to="/" className="nav-link" tabIndex="1">Home</Link>
                                     </li>
                                     <li className="nav-item">
-                                        <Link to="/profile" className="nav-link" tabIndex="2">Profile</Link>
+                                        <Link to={`/profile/${currentUser}`} className="nav-link" tabIndex="2">Profile</Link>
                                     </li>
                                     <li className="nav-item">
                                         <Link to="/register" className="nav-link" tabIndex="3">Messages</Link>
-                                    </li>                                
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link to="/logout" className="nav-link" tabIndex="3">Logout</Link>
+                                    </li>                                  
                                 </ul>
                             </div>
                         </div>

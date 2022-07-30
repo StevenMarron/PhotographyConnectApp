@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 
 
-function Post(props){
+function UserPost(props){
     const [postIdForEdit, setPostId] = useState('');
 
     const token=sessionStorage.getItem("AuthToken")
@@ -16,10 +16,11 @@ function Post(props){
         setPostId(`${props.postId}`)
     }
 
-    // function handleUserSelect(e){
-    //     e.preventDefault()
-    //     console.log(props.userId)
-    // }
+    function handleUserSelect(e){
+        e.preventDefault()
+        console.log(props.userId)
+        props.setSelectedUser2(props.userId)
+    }
 
     if(decodedToken.user_id === props.userId){
         return(
@@ -28,7 +29,7 @@ function Post(props){
                 <div className="post fade-in">
                     <div className="row">
                         <div className="col-lg-4 col-sm-12">
-                            <Link to={`/profile/${props.userId}`}>
+                            <Link onMouseEnter={handleUserSelect} to="/profile">
                                 <h2>{props.userFirstName} {props.userLastName}</h2>
                             </Link>
                             
@@ -36,11 +37,6 @@ function Post(props){
                             <button onMouseEnter={handlePostSelect} className="btn button-vis">
                                 <Link to={`/profile/post/edit/${postIdForEdit}`}>Edit Post</Link>
                             </button>
-                            {/* {edit ? <EditPost postId={postIdForEdit} edit={edit} setEdit={setEdit} caption={postCaption} /> : null} */}
-                            {/* <button onMouseEnter={handlePostSelect} onClick={handlePostDelete} className="btn">
-                                Delete Post
-                            </button>
-                            {deletePost ? <DeletePost postId={postIdForEdit} deletePost={deletePost} setDeletePost={setDeletePost}/> : null} */}
                         </div>
 
                         <div className="col-lg-8 col-sm-12">
@@ -58,9 +54,7 @@ function Post(props){
                 <div className="post fade-in">
                     <div className="row">
                         <div className="col-lg-4 col-sm-12">
-                            <Link to={`/profile/${props.userId}`}>
-                                <h2>{props.userFirstName} {props.userLastName}</h2>
-                            </Link>
+                            <h2>{props.userFirstName} {props.userLastName}</h2>
                             <p>{props.caption}</p>
                         </div>
 
@@ -76,4 +70,4 @@ function Post(props){
 
 }
 
-export default Post;
+export default UserPost;

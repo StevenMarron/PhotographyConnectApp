@@ -6,6 +6,7 @@ const cors = require('cors')({origin: true});
 firebase.initializeApp(config);
 
 const {valLogin, valRegister} = require('../util/validators');
+const { brotliDecompress } = require('zlib');
 
 //USER LOGIN
 exports.loginUser = function(request, response){
@@ -79,7 +80,7 @@ exports.registerUser = function(request, response){
             instaLink: request.body.instaLink,
             createdAt: new Date().toISOString()
         };
-        return db.doc(`/users/${userCred.email}`).set(userCred);
+        return db.doc(`/users/${userCred.userId}`).set(userCred);
     })
     .then(function(){
         return response.status(201).json({token});
@@ -120,7 +121,7 @@ exports.uploadUserImage = function (request, response){
         })
         .then(function(){
             const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFilename}?alt=media`;
-            return db.doc(`/users/${request.user.email}`).update({ userImageUrl: imageUrl });
+            return db.doc(`/users/${request.user.uid}`).update({ userImageUrl: imageUrl });
         })
         .then(function(){
             return response.json({message: "Image update succesful"});
@@ -135,8 +136,8 @@ exports.uploadUserImage = function (request, response){
 
 //GET USER DETAILS
 exports.getUserDetails = function(request, response){
-    let userData= {};
-    db.doc(`/users/${request.user.email}`).get().then(function(doc){
+    let userData= {}; 
+    db.doc(`/users/${request.params.userId}`).get().then(function(doc){
         if(doc.exists){
             userData.userCred=doc.data();
             return response.json(userData);
@@ -150,7 +151,7 @@ exports.getUserDetails = function(request, response){
 
 //UPDATE USER DETAILS
 exports.updateUserDetails = function(request, response){
-    let document = db.collection('users').doc(`${request.user.email}`);
+    let document = db.collection('users').doc(`${request.user.uid}`);
     document.update(request.body).then(function(){
         response.json({message: "user details updated successfully"})
     })

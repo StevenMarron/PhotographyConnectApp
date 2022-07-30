@@ -4,25 +4,25 @@ import LoggedInHome from "../components/LoggedInHome";
 import LoggedOutHome from "../components/loggedOutHome";
 
 function Home(props){
-    const [homeLoggedIn, setHomeLoggedIn] = useState(false)
+    const [homeLogIn, setHomeLogIn] = useState(false)
 
     useEffect(function(){
         function tokenCheck(){
           const token=sessionStorage.getItem("AuthToken")
           if(token){
-            setHomeLoggedIn(true)
+            setHomeLogIn(true)
           }
             else{
-            setHomeLoggedIn(false)
+            setHomeLogIn(false)
           }
       }
-      tokenCheck()
+      tokenCheck()            
       },[])
 
-      props.checkHomeLogIn(homeLoggedIn)
+      // props.checkHomeLogIn(homeLogIn)
 
 
-    if(homeLoggedIn){
+    if(homeLogIn){
         return(
        <LoggedInHome />         
         )

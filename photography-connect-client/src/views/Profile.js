@@ -3,10 +3,15 @@ import "../App.css";
 import axios from "axios";
 import FacebookImage from "../images/Facebook-logo.png";
 import InstaImage from "../images/Instagram-logo.png";
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import UserPostAPI from "../components/UserPostAPI";
+import jwt_decode from "jwt-decode";
 
-function Profile(){
+function Profile(props){
+    const params = useParams();
+    const token=sessionStorage.getItem("AuthToken")
+    const decodedToken= jwt_decode(token);
+
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [occupation, setOccupation] = useState('')
@@ -14,16 +19,22 @@ function Profile(){
     const [facebookLink, setFacebookLink] = useState('')
     const [instaLink, setInstaLink] = useState('')
     const [userImage, setUserImage] = useState('')
+    const [selectedUser1, setSelectedUser1] = useState(params.userId)
+
+
 
     useEffect(function(){
         async function getUserDetails(){
-            const token=sessionStorage.getItem("AuthToken")
+            // setSelectedUser1(decodedToken.user_id)
+            // console.log(params.userId)
+            // setSelectedUser1(params.userId)
+            console.log(selectedUser1)
             const config={
                  headers:{
                     Authorization : `${token}` 
                 }
             }
-            var data = await axios.get("http://localhost:5000/photographyconnect-61141/us-central1/api/user", config)
+            var data = await axios.get(`http://localhost:5000/photographyconnect-61141/us-central1/api/user/${params.userId}`, config)
             .then(function(response){
                 setFirstName(response.data.userCred.firstName)
                 setLastName(response.data.userCred.lastName)
@@ -64,7 +75,7 @@ function Profile(){
                                 </a>                            
                             </p>
                             <button className="btn">
-                                <Link to="/profile/edit">
+                                <Link to={`/profile/edit/${params.userId}`}>
                                     Edit Bio
                                 </Link>
                             </button>
@@ -79,7 +90,7 @@ function Profile(){
                 </div>
                 <div className="row profile-posts">
                     <div className="col-lg-12 col-sm-12">
-                        <UserPostAPI/>
+                        <UserPostAPI selectedUser1={selectedUser1}/>
                         
                     </div>
                 </div>
@@ -112,7 +123,7 @@ function Profile(){
                                 </a>                          
                             </p>
                             <button className="btn">
-                                <Link to="/profile/edit">
+                                <Link to={`/profile/edit/${params.userId}`}>
                                     Edit Bio
                                 </Link>
                             </button>
@@ -127,7 +138,7 @@ function Profile(){
                 </div>
                 <div className="row profile-posts">
                     <div className="col-lg-12 col-sm-12">
-                        <UserPostAPI/>
+                    <UserPostAPI selectedUser1={selectedUser1}/>
                         
                     </div>
                 </div>
@@ -157,7 +168,7 @@ function Profile(){
                                 Social Links: No social links to display                         
                             </p>
                             <button className="btn">
-                                <Link to="/profile/edit">
+                                <Link to={`/profile/edit/${params.userId}`}>
                                     Edit Bio
                                 </Link>
                             </button>
@@ -172,7 +183,7 @@ function Profile(){
                 </div>
                 <div className="row profile-posts">
                     <div className="col-lg-12 col-sm-12">
-                        <UserPostAPI/>
+                    <UserPostAPI selectedUser1={selectedUser1}/>
                         
                     </div>
                 </div>
@@ -208,7 +219,7 @@ function Profile(){
                                 </a>                            
                             </p>
                             <button className="btn">
-                                <Link to="/profile/edit">
+                                <Link to={`/profile/edit/${params.userId}`}>
                                     Edit Bio
                                 </Link>
                             </button>
