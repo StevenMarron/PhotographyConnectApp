@@ -11,11 +11,10 @@ import EditProfile from './components/editProfile';
 import UploadProfileImage from './components/UploadProfileImage';
 import EditPost from "./components/EditPost";
 import Logout from "./components/Logout";
-import axios from 'axios';
+import NewPost from './components/NewPost';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false)
-  const [currentUser, setCurrentUser] = useState()
   const [selectedUser, setSelectedUser] = useState("Random user input")
 
 
@@ -46,6 +45,7 @@ function App() {
         <Route path='/profile/edit/:userId' element={<EditProfile/>}/>
         <Route path='/profile/uploadprofileimage' element={<UploadProfileImage/>}/>
         <Route path='/profile/post/edit/:postId' element={<EditPost />}/>
+        <Route path='/newpost' element={<NewPost />}/>
       </Routes>
       <Footer/>      
       </div>

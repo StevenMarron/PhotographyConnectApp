@@ -6,7 +6,6 @@ const cors = require('cors')({origin: true});
 firebase.initializeApp(config);
 
 const {valLogin, valRegister} = require('../util/validators');
-const { brotliDecompress } = require('zlib');
 
 //USER LOGIN
 exports.loginUser = function(request, response){
@@ -70,8 +69,8 @@ exports.registerUser = function(request, response){
         token=idToken;
         const userCred = {
             userId,
-            firstName: request.body.userFirstName,
-            lastName: request.body.userLastName,
+            userFirstName: request.body.userFirstName,
+            userLastName: request.body.userLastName,
             occupation: request.body.occupation,
             email: request.body.email,
             userImageUrl: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/Default-User-Image.jpg?alt=media`,
@@ -100,17 +99,26 @@ exports.uploadUserImage = function (request, response){
     let imageForUpload = {};
 
     busboy.on('file', function(fieldname, file, filename, encoding, mimetype){
-        if (mimetype !== 'image/jpg'){
-            return response.status(400).json({ error: "Uploads must be .jpeg file type"});
+        try{
+            if (mimetype !== 'image/jpg' && mimetype !== 'image/jpeg'){
+                return response.status(400).json({ error: "Uploads must be .jpeg file type"});
         }
 
         const extension = filename.split('.')[filename.split('.').length - 1];
         imageFilename = `${Math.round(Math.random()*100000)}.${extension}`;
+        console.log("Test String" + os.tmpdir());
         const filePath = path.join(os.tmpdir(), imageFilename);
         imageForUpload = {filePath, mimetype};
-        file.pipe(fs.createWriteStream(filePath));
-    });
+        file.pipe(fs.createWriteStream(filePath));            
+        }
+
+        catch(error){
+            console.error(error);
+            return response.status(500).json({message: "Could not define path"});
+        }
+    });  
     busboy.on('finish', function(){
+        console.log("Different Test String" + imageForUpload.filePath)
         admin.storage().bucket().upload(imageForUpload.filePath,{
             resumable: false,
             metadata: {

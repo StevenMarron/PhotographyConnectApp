@@ -32,12 +32,6 @@ function Login(props){
                 console.log(response.data.token)
                 props.setLoggedIn(true)
                 // setLogIn(true)
-                
-            }).then(function(){
-                const token=sessionStorage.getItem("AuthToken")
-                const decodedToken= jwt_decode(token);
-                // console.log(decodedToken.user_id)
-                props.setCurrentUser(decodedToken.user_id)
             }).then(function(){
                 history('/')                
             })                

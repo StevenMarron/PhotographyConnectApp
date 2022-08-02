@@ -1,8 +1,11 @@
 import React, {useState, useEffect} from "react";
+import {useParams} from "react-router-dom";
 import "../App.css";
 import axios from "axios";
 
+
 function DeletePost(props){
+    const params = useParams();
 
     async function handleSubmit(e){
         e.preventDefault()
@@ -13,12 +16,13 @@ function DeletePost(props){
                     Authorization : `${token}` 
                 }
             }
-            var data = await axios.delete(`http://localhost:5000/photographyconnect-61141/us-central1/api/post/${props.postId}`, config)
+            var data = await axios.delete(`http://localhost:5000/photographyconnect-61141/us-central1/api/post/${params.postId}`, config)
             .then(function(){
                 props.setDeletePost(true)
             })         
         }
         catch(e){
+            console.log(e)
             if(e.response.status === 400){
                 console.log("an error occurred")
             }
