@@ -61,33 +61,39 @@ exports.getAllUserPosts = function(request, response){
         return response.status(500).json({error: error.code, message:"500:Internal server error"});
     });
 } 
-//Create new post 
-//TODO add if statement for empty imageUrl
-exports.postOnePost = function(request, response){
 
-//Busboy package used for image upload
+//Add Post Image
+exports.addPostImage = function (request, response){
     const BusBoy = require('busboy');
     const path = require('path');
     const os = require('os');
     const fs = require('fs');
-    // return response.json(BusBoy);
     const busboy = new BusBoy({headers: request.headers});
 
     let imageFilename;
     let imageForUpload = {};
 
     busboy.on('file', function(fieldname, file, filename, encoding, mimetype){
-        if (mimetype !== 'image/jpeg'){
-            return response.status(400).json({ error: "Uploads must be .jpeg file type"});
+        try{
+            if (mimetype !== 'image/jpg' && mimetype !== 'image/jpeg'){
+                return response.status(400).json({ error: "Uploads must be .jpeg file type"});
         }
 
         const extension = filename.split('.')[filename.split('.').length - 1];
         imageFilename = `${Math.round(Math.random()*100000)}.${extension}`;
+        console.log("Test String" + os.tmpdir());
         const filePath = path.join(os.tmpdir(), imageFilename);
         imageForUpload = {filePath, mimetype};
-        file.pipe(fs.createWriteStream(filePath));
-    });
+        file.pipe(fs.createWriteStream(filePath));            
+        }
+
+        catch(error){
+            console.error(error);
+            return response.status(500).json({message: "Could not define path"});
+        }
+    });  
     busboy.on('finish', function(){
+        console.log("Different Test String" + imageForUpload.filePath)
         admin.storage().bucket().upload(imageForUpload.filePath,{
             resumable: false,
             metadata: {
@@ -97,33 +103,47 @@ exports.postOnePost = function(request, response){
             }
         })
         .then(function(){
-            
             const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFilename}?alt=media`;
-            const newPost = {
-                userFirstName: request.user.userFirstName,
-                userLastName: request.user.userLastName,
-                userId: request.user.userId,
-                caption: request.body.caption,
-                imageUrl: imageUrl,
-                createdAt: new Date().toISOString()
-            }
-
-            db.collection('posts').add(newPost).then(function(doc){
-                const responseNewPost = newPost;
-                responseNewPost.id = doc.id;
-                return response.json(responseNewPost);
-            })
-            .catch(function(error){
-                console.error(error);
-                return response.status(500).json({error: error});
-            });
+            return db.doc(`/posts/${request.params.postId}`).update({ imageUrl: imageUrl });
+        })
+        .then(function(){
+            return response.json({message: "Image update succesful"});
         })
         .catch(function(error){
             console.error(error);
-            return response.status(500).json({error: error});
+            return response.status(500).json({message: "Could not upload photo, an internal server error occurred"});
         });
-    })
+    });
     busboy.end(request.rawBody);
+}
+
+
+//Create new post 
+//TODO add if statement for empty imageUrl
+exports.postOnePost = function(request, response){
+    console.log(request.user)
+    const newPost = {
+        userFirstName: request.user.userFirstName,
+        userLastName: request.user.userLastName,
+        userId: request.user.user_id,
+        caption: request.body.caption,
+        imageUrl: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/Default-User-Image.jpg?alt=media`,
+        createdAt: new Date().toISOString()
+    }
+
+    db.collection('posts').add(newPost).then(function(doc){
+        const responseNewPost = newPost;
+        responseNewPost.id = doc.id;
+        return response.json(responseNewPost);
+    })
+    .catch(function(error){
+        console.error(error);
+        return response.status(500).json({error: error});
+    })
+    .catch(function(error){
+        console.error(error);
+        return response.status(500).json({error: error});
+    });
 }
 
 //Delete post

@@ -9,7 +9,7 @@ function UploadProfileImage(){
 
     function handleImageInput(e){
         e.preventDefault()
-        setUserImage(e.target.file)
+        setUserImage(e.target.files[0])
     }
 
     async function handleSubmit(e){
@@ -17,11 +17,11 @@ function UploadProfileImage(){
         try{
             const token=sessionStorage.getItem("AuthToken")
             const formData = new FormData();
-            formData.append("file", userImage)
+            formData.append('file', userImage)
             var data = await axios.post("http://localhost:5000/photographyconnect-61141/us-central1/api/user/image", formData, {headers:{
                     'Authorization' : `${token}`,
                     'Accept' : `multipart/form-data`
-                }})
+            }})
             .then(function(){
                 setImageUpdated(true)
             })              

@@ -5,9 +5,22 @@ import PCLogo from "../images/Photography-Connect-Logo.png";
 import jwt_decode from "jwt-decode";
 
 function Navbar(props){
-    const token=sessionStorage.getItem("AuthToken")
-    const decodedToken= jwt_decode(token);
-    const currentUser = decodedToken.user_id;
+    const [currentUser, setCurrentUser] = useState('')
+
+    useEffect(function(){
+        function userCheck(){
+          const token=sessionStorage.getItem("AuthToken")
+          if(token){
+            const decodedToken= jwt_decode(token);
+            console.log(decodedToken.user_id)
+            setCurrentUser(decodedToken.user_id)
+          }
+            else{
+            setCurrentUser('')
+          }
+      }
+      userCheck()
+      },[])
 
     if(props.loggedIn){
         return(
@@ -30,7 +43,7 @@ function Navbar(props){
                                         <Link to={`/profile/${currentUser}`} className="nav-link" tabIndex="2">Profile</Link>
                                     </li>
                                     <li className="nav-item">
-                                        <Link to="/register" className="nav-link" tabIndex="3">Messages</Link>
+                                        <Link to="/newpost" className="nav-link" tabIndex="3">New Post</Link>
                                     </li>
                                     <li className="nav-item">
                                         <Link to="/logout" className="nav-link" tabIndex="3">Logout</Link>
