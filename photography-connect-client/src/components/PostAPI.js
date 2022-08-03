@@ -32,15 +32,15 @@ function PostAPI(){
                     {i.map(function(j,index){
                         return(
                             <div key={i[index].postId}>
-                        <Post 
-                            userFirstName={i[index].userFirstName}
-                            userLastName={i[index].userLastName}
-                            userId={i[index].userId}
-                            imageUrl={i[index].imageUrl}
-                            caption={i[index].caption}
-                            postId={i[index].postId}
-                        />
-                        </div>    
+                                <Post 
+                                    userFirstName={i[index].userFirstName}
+                                    userLastName={i[index].userLastName}
+                                    userId={i[index].userId}
+                                    imageUrl={i[index].imageUrl}
+                                    caption={i[index].caption}
+                                    postId={i[index].postId}
+                                />
+                            </div>    
                         )
                     })}                              
                 </div>

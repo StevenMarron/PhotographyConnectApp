@@ -50,7 +50,9 @@ exports.registerUser = function(request, response){
 
     let token, userId;
 
-    db.doc(`/users/${newUser.email}`).get().then(function(doc){
+    // db.doc(`/users/${newUser.email}`).get().then(function(doc){
+    db.collection("users").where("email", "==", newUser.email).get()
+    .then(function(doc){
         if (doc.exists){
             return response.status(400).json({username: "This email address is already in use"});
         }
@@ -83,7 +85,11 @@ exports.registerUser = function(request, response){
     })
     .then(function(){
         return response.status(201).json({token});
-    })
+    })    
+    .catch(function(error){
+        console.error(error);
+        return response.status(400).json({message: "This email is already in use"});
+    });
   
 }
 

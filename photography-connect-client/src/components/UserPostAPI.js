@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from "react";
+import {useParams} from "react-router-dom";
 import "../App.css";
 import axios from 'axios';
 import UserPost from './UserPost';
 
 function UserPostAPI(props){
+    const params = useParams();
     const [posts, setPosts] = useState([]);
-    const [selectedUser2, setSelectedUser2] = useState(props.selectedUser1);
 
     useEffect(function(){
         // console.log(props.selectedUser1)
@@ -16,7 +17,7 @@ function UserPostAPI(props){
                     Authorization : `${token}` 
                 }
             }
-            var data = await axios.get(`http://localhost:5000/photographyconnect-61141/us-central1/api/user/posts/${selectedUser2}`, config)
+            var data = await axios.get(`http://localhost:5000/photographyconnect-61141/us-central1/api/user/posts/${params.userId}`, config)
             .then(function(response){
             setPosts([response.data])
             // console.log([response.data]);                      
@@ -24,7 +25,7 @@ function UserPostAPI(props){
         }
         getAllPosts()
         // console.log(posts)
-        },[])
+        },[params.userId])
 
     return(
         <div>
@@ -33,9 +34,8 @@ function UserPostAPI(props){
                 <div key={index}>
                     {i.map(function(j,index){
                         return(
-                            <div key={index}>
+                            <div key={i[index].postId}>
                                 <UserPost 
-                                    setSelectedUser2={setSelectedUser2}
                                     userFirstName={i[index].userFirstName}
                                     userLastName={i[index].userLastName}
                                     userId={i[index].userId}

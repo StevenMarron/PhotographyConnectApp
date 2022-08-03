@@ -9,18 +9,26 @@ function LoggedOutHome(){
                 <div className="home-hero-text centered">
                     <h1>Welcome to Photography Connect</h1>
                     <p>
-                    Photography connect is an application designed by amateur photographer Steven Marron
+                    Photography connect is an application
                     that allows for the sharing of photographic content. The goal of the application is to
-                    help models and photographers to connect to one another for the purpose of developing professional
+                    help models and photographers to discover one another for the purpose of developing professional
                     relationships
                     </p>
+                    <br></br>
+                    <p>
+                    PLEASE NOTE: This application is a college project and is not intended for use at this time.
+                    Please do NOT enter sensitive or personal data into this application, thank you.
+                    </p>
+                    <Link to="/login" >
                         <button className="btn btn-lg">
-                            <Link to="/login" className="nav-link-home">Login</Link>
-                            
-                        </button> 
+                            Login
+                        </button>
+                    </Link>
+                    <Link to="/register">
                         <button className="btn btn-lg">
-                            <Link to="/register" className="nav-link-home">Register</Link>
-                        </button>  
+                            Register
+                        </button>
+                    </Link>
                 </div>
             </div>
         </div>

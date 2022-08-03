@@ -7,20 +7,21 @@ import jwt_decode from "jwt-decode";
 function Navbar(props){
     const [currentUser, setCurrentUser] = useState('')
 
+    function userCheck(){
+        const token=sessionStorage.getItem("AuthToken")
+        if(token){
+          const decodedToken= jwt_decode(token);
+        //   console.log(decodedToken.user_id)
+          setCurrentUser(decodedToken.user_id)
+        }
+          else{
+          setCurrentUser('')
+        }
+    }
+
     useEffect(function(){
-        function userCheck(){
-          const token=sessionStorage.getItem("AuthToken")
-          if(token){
-            const decodedToken= jwt_decode(token);
-            console.log(decodedToken.user_id)
-            setCurrentUser(decodedToken.user_id)
-          }
-            else{
-            setCurrentUser('')
-          }
-      }
       userCheck()
-      },[])
+      },[props.loggedIn])
 
     if(props.loggedIn){
         return(
@@ -39,7 +40,7 @@ function Navbar(props){
                                     <li className="nav-item">
                                         <Link to="/" className="nav-link" tabIndex="1">Home</Link>
                                     </li>
-                                    <li className="nav-item">
+                                    <li className="nav-item" onMouseEnter={userCheck}>
                                         <Link to={`/profile/${currentUser}`} className="nav-link" tabIndex="2">Profile</Link>
                                     </li>
                                     <li className="nav-item">

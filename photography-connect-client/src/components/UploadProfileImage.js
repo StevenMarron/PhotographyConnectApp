@@ -1,9 +1,12 @@
 import React, {useState} from "react";
 import "../App.css";
 import { Navigate } from "react-router-dom";
+import jwt_decode from "jwt-decode";
 import axios from "axios";
 
 function UploadProfileImage(){
+    const token=sessionStorage.getItem("AuthToken")
+    const decodedToken= jwt_decode(token);
     const [userImage, setUserImage] = useState()
     const [imageUpdated, setImageUpdated] = useState(false)
 
@@ -36,7 +39,7 @@ function UploadProfileImage(){
 
     if(imageUpdated){
         return(
-            <Navigate replace to="/profile"/>            
+            <Navigate replace to={`/profile/${decodedToken.user_id}`}/>            
         )
     }
     else{
@@ -44,7 +47,7 @@ function UploadProfileImage(){
             <div className="login-form">
                 <form className="form-input login-form">
                     <div>
-                        <label className="form-label">Please choose an image.. <br></br>(Image must be .jpeg and under 10mb)</label>
+                        <label className="form-label">Please choose an image.. <br></br>(Image must be .jpeg/.jpg and under 10MB)</label>
                         <input onChange={handleImageInput} className="form-control form-control-lg" id="formFileLg" type="file"/>
                     </div>
                                                         

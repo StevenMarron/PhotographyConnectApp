@@ -16,12 +16,6 @@ function UserPost(props){
         setPostId(`${props.postId}`)
     }
 
-    function handleUserSelect(e){
-        e.preventDefault()
-        console.log(props.userId)
-        props.setSelectedUser2(props.userId)
-    }
-
     if(decodedToken.user_id === props.userId){
         return(
             <div className="container-fluid">
@@ -29,14 +23,13 @@ function UserPost(props){
                 <div className="post fade-in">
                     <div className="row">
                         <div className="col-lg-4 col-sm-12">
-                            <Link onMouseEnter={handleUserSelect} to="/profile">
-                                <h2>{props.userFirstName} {props.userLastName}</h2>
-                            </Link>
-                            
+                            <h2>{props.userFirstName} {props.userLastName}</h2>
                             <p>{props.caption}</p>
-                            <button onMouseEnter={handlePostSelect} className="btn button-vis">
-                                <Link to={`/profile/post/edit/${postIdForEdit}`}>Edit Post</Link>
-                            </button>
+                            <Link to={`/profile/post/edit/${postIdForEdit}`}>
+                                <button onMouseEnter={handlePostSelect} className="btn button-vis">
+                                    Edit Post
+                                </button>
+                            </Link>
                         </div>
 
                         <div className="col-lg-8 col-sm-12">

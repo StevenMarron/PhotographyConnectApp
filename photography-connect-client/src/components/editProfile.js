@@ -54,8 +54,8 @@ function EditProfile(){
             }
             var data = await axios.get(`http://localhost:5000/photographyconnect-61141/us-central1/api/user/${userId}`, config)
             .then(function(response){
-                setFirstName(response.data.userCred.firstName)
-                setLastName(response.data.userCred.lastName)
+                setFirstName(response.data.userCred.userFirstName)
+                setLastName(response.data.userCred.userLastName)
                 setOccupation(response.data.userCred.occupation)
                 setBio(response.data.userCred.bio)
                 // setFacebookLink('https://www.facebook.com/')
