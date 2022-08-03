@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import "../App.css";
 import { Link, useNavigate, Navigate } from "react-router-dom";
 import axios from "axios";
-import jwt_decode from "jwt-decode";
 
 function Login(props){
     const [email, setEmail] = useState('');
@@ -23,7 +22,6 @@ function Login(props){
 
     async function handleSubmit(e){
         e.preventDefault()
-        // try{
             var data = await axios.post("http://localhost:5000/photographyconnect-61141/us-central1/api/login",{
                 email: email,
                 password: password
@@ -35,13 +33,8 @@ function Login(props){
             }).then(function(){
                 history('/')                
             })                
-        // }
-        // catch(e){
-        //     if(e.response.status === 400){
-        //       console.log("An error occurred")  
-        //     }
-        // }
     }
+
     if(props.loggedIn === true){
         return(
             <div>

@@ -41,7 +41,7 @@ function App() {
         <Route path='/login' element={<Login loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>}/>
         <Route path='/register' element={<Register loggedIn={loggedIn} setLoggedIn={setLoggedIn} />}/>
         <Route path='/logout' element={<Logout loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>}/>
-        <Route path='/profile/:userId' element={<Profile selectedUser={selectedUser} setSelectedUser={setSelectedUser}/>}/>
+        <Route path='/profile/:userId' element={<Profile/>}/>
         <Route path='/profile/edit/:userId' element={<EditProfile/>}/>
         <Route path='/profile/uploadprofileimage' element={<UploadProfileImage/>}/>
         <Route path='/profile/post/edit/:postId' element={<EditPost />}/>

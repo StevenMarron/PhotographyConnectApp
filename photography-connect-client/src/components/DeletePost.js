@@ -1,11 +1,15 @@
 import React, {useState, useEffect} from "react";
-import {useParams} from "react-router-dom";
+import {useParams, useNavigate} from "react-router-dom";
+import jwt_decode from "jwt-decode";
 import "../App.css";
 import axios from "axios";
 
 
 function DeletePost(props){
     const params = useParams();
+    const history= useNavigate();
+    const token=sessionStorage.getItem("AuthToken")
+    const decodedToken= jwt_decode(token);
 
     async function handleSubmit(e){
         e.preventDefault()
@@ -17,13 +21,11 @@ function DeletePost(props){
                 }
             }
             var data = await axios.delete(`http://localhost:5000/photographyconnect-61141/us-central1/api/post/${params.postId}`, config)
-            .then(function(){
-                props.setDeletePost(true)
-            })         
+            history(`/profile/${decodedToken.user_id}`)         
         }
         catch(e){
             console.log(e)
-            if(e.response.status === 400){
+            if(e.response === 400){
                 console.log("an error occurred")
             }
         }
@@ -32,17 +34,17 @@ function DeletePost(props){
 
     return( 
         <div>
-            <button type="button" className="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <button type="button" className="btn" data-bs-toggle="modal" data-bs-target="#deleteModal" >
                 Delete
             </button>
             
-            <div className="modal fade" id="exampleModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal fade" id="deleteModal" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title" id="exampleModalLabel"></h5>
+                        <h5 className="modal-title" id="deleteModalLabel"></h5>
                         <button type="button" className="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="false">X</span>
                         </button>
                     </div>
                     <div className="modal-body">
@@ -50,7 +52,7 @@ function DeletePost(props){
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" onClick={handleSubmit} className="btn btn-primary">Delete</button>
+                        <button type="button" onClick={handleSubmit} data-bs-dismiss="modal" className="btn btn-primary">Delete</button>
                     </div>
                     </div>
                 </div>

@@ -119,7 +119,6 @@ exports.addPostImage = function (request, response){
 
 
 //Create new post 
-//TODO add if statement for empty imageUrl
 exports.postOnePost = function(request, response){
     console.log(request.user)
     const newPost = {

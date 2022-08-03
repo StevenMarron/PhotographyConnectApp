@@ -28,14 +28,18 @@ function Post(props){
                 <div className="post fade-in">
                     <div className="row">
                         <div className="col-lg-4 col-sm-12">
-                            <Link to={`/profile/${props.userId}`}>
+                            <Link to={`/profile/${decodedToken.user_id}`}>
                                 <h2>{props.userFirstName} {props.userLastName}</h2>
                             </Link>
                             
                             <p>{props.caption}</p>
-                            <button onMouseEnter={handlePostSelect} className="btn button-vis">
-                                <Link to={`/profile/post/edit/${postIdForEdit}`}>Edit Post</Link>
-                            </button>
+                            
+                            <Link to={`/profile/post/edit/${postIdForEdit}`}>
+                                <button onMouseEnter={handlePostSelect} className="btn button-vis">
+                                    Edit Post
+                                </button>
+                            </Link>
+                            
                             {/* {edit ? <EditPost postId={postIdForEdit} edit={edit} setEdit={setEdit} caption={postCaption} /> : null} */}
                             {/* <button onMouseEnter={handlePostSelect} onClick={handlePostDelete} className="btn">
                                 Delete Post
