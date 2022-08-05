@@ -30,7 +30,7 @@ function Navbar(props){
                     <nav className="navbar navbar-expand-lg navbar-dark">
                         <div className="container-lg">
                                 <Link to="/" className="navbar-brand" tabIndex="0">
-                                    <img src={PCLogo} className="navbar-brand" width="100" height="auto" alt="" />
+                                    <img src={PCLogo} className="navbar-brand" width="100" height="auto" alt="Home" />
                                 </Link>
                             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                                 <span className="navbar-toggler-icon"></span>

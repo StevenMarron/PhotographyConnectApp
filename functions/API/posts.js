@@ -37,6 +37,7 @@ exports.getAllPosts = function(request, response){
     });
 } 
 
+//Get all posts of a specific user
 exports.getAllUserPosts = function(request, response){
 
     db.collection('posts').where('userId', '==', request.params.userId).orderBy('createdAt', 'desc').get().then(
@@ -76,7 +77,7 @@ exports.addPostImage = function (request, response){
     busboy.on('file', function(fieldname, file, filename, encoding, mimetype){
         try{
             if (mimetype !== 'image/jpg' && mimetype !== 'image/jpeg'){
-                return response.status(400).json({ error: "Uploads must be .jpeg file type"});
+                return response.status(400).json({ message: "Uploads must be .jpeg file type"});
         }
 
         const extension = filename.split('.')[filename.split('.').length - 1];
@@ -114,7 +115,13 @@ exports.addPostImage = function (request, response){
             return response.status(500).json({message: "Could not upload photo, an internal server error occurred"});
         });
     });
-    busboy.end(request.rawBody);
+    // busboy.end(request.rawBody);
+    if (request.rawBody) {
+        busboy.end(request.rawBody);
+    }
+    else {
+        request.pipe(busboy);
+    }
 }
 
 
@@ -126,7 +133,7 @@ exports.postOnePost = function(request, response){
         userLastName: request.user.userLastName,
         userId: request.user.user_id,
         caption: request.body.caption,
-        imageUrl: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/Default-User-Image.jpg?alt=media`,
+        imageUrl: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/Image-Upload-Error.jpg?alt=media`,
         createdAt: new Date().toISOString()
     }
 

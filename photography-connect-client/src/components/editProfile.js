@@ -13,6 +13,7 @@ function EditProfile(){
     const [facebookLink, setFacebookLink] = useState('')
     const [instaLink, setInstaLink] = useState('')
     const [bioUpdated, setBioUpdated] = useState(false)
+    const [error, setError] = useState('')
 
     function handleFirstNameInput(e){
         e.preventDefault()
@@ -52,7 +53,9 @@ function EditProfile(){
                     Authorization : `${token}` 
                 }
             }
-            var data = await axios.get(`http://localhost:5000/photographyconnect-61141/us-central1/api/user/${userId}`, config)
+            // var data = await axios.get(`http://localhost:5000/photographyconnect-61141/us-central1/api/user/${userId}`, config)
+            var data = await axios.get(`https://us-central1-photographyconnect-61141.cloudfunctions.net/api/user/${userId}`, config)
+            // var data = await axios.get(`/user/${userId}`, config)
             .then(function(response){
                 setFirstName(response.data.userCred.userFirstName)
                 setLastName(response.data.userCred.userLastName)
@@ -76,7 +79,10 @@ function EditProfile(){
                     Authorization : `${token}` 
                 }
             }
-            var data = await axios.post(`http://localhost:5000/photographyconnect-61141/us-central1/api/user/${userId}`,
+            // var data = await axios.post(`http://localhost:5000/photographyconnect-61141/us-central1/api/user/${userId}`,
+            var data = await axios.post(`https://us-central1-photographyconnect-61141.cloudfunctions.net/api/user/${userId}`,
+            // var data = await axios.post(`/user/${userId}`,
+            
             {
                 firstName: firstName,
                 lastName: lastName,
@@ -91,9 +97,7 @@ function EditProfile(){
             })              
         }
         catch(e){
-            if(e.response.status === 400){
-                console.log("an error occurred")
-            }
+            setError(e.response.data.message)
         }
         
     }
@@ -134,7 +138,7 @@ function EditProfile(){
                     <div className="input-group mb-3">
                         <input type="text" placeholder="Instagram URL" value={instaLink} onChange={handleInstaLinkInput} className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
                     </div>
-                                                        
+                    <p className="error">{error}</p>                                
                     <button onClick={handleSubmit} className="btn" type="submit">Submit</button>          
                     
                 </form>

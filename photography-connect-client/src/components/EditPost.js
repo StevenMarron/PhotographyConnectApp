@@ -27,7 +27,9 @@ function EditPost(props){
                     Authorization : `${token}` 
                 }
             }
-            var data = await axios.get(`http://localhost:5000/photographyconnect-61141/us-central1/api/post/${params.postId}`, config)
+            // var data = await axios.get(`http://localhost:5000/photographyconnect-61141/us-central1/api/post/${params.postId}`, config)
+            var data = await axios.get(`https://us-central1-photographyconnect-61141.cloudfunctions.net/api/post/${params.postId}`, config)
+            // var data = await axios.get(`/post/${params.postId}`, config)
             .then(function(response){
                 setCaption(response.data[1].caption)
                 setImageUrl(response.data[1].imageUrl)
@@ -48,7 +50,9 @@ function EditPost(props){
                     Authorization : `${token}` 
                 }
             }
-            var data = await axios.post(`http://localhost:5000/photographyconnect-61141/us-central1/api/post/${params.postId}`,
+            // var data = await axios.post(`http://localhost:5000/photographyconnect-61141/us-central1/api/post/${params.postId}`,
+            var data = await axios.post(`https://us-central1-photographyconnect-61141.cloudfunctions.net/api/post/${params.postId}`,
+            // var data = await axios.post(`/post/${params.postId}`,
             {
                 caption: caption
             },

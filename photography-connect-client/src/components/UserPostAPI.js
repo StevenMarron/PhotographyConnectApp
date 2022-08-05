@@ -17,7 +17,10 @@ function UserPostAPI(props){
                     Authorization : `${token}` 
                 }
             }
-            var data = await axios.get(`http://localhost:5000/photographyconnect-61141/us-central1/api/user/posts/${params.userId}`, config)
+            // var data = await axios.get(`http://localhost:5000/photographyconnect-61141/us-central1/api/user/posts/${params.userId}`, config)
+            var data = await axios.get(`https://us-central1-photographyconnect-61141.cloudfunctions.net/api/user/posts/${params.userId}`, config)
+            // var data = await axios.get(`/user/posts/${params.userId}`, config)
+            
             .then(function(response){
             setPosts([response.data])
             // console.log([response.data]);                      
@@ -32,7 +35,7 @@ function UserPostAPI(props){
         {posts.map(function(i, index){
             return(
                 <div key={index}>
-                    {i.map(function(j,index){
+                    {Object.values(i).map(function(j,index){
                         return(
                             <div key={i[index].postId}>
                                 <UserPost 

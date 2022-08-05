@@ -14,6 +14,14 @@ function Register(props){
     const [facebookLink, setFacebookLink] = useState('')
     const [instaLink, setInstaLink] = useState('')
     const [data, setData] = useState('')
+    const [errorEmail, setErrorEmail] = useState('')
+    const [errorPassword, setErrorPassword] = useState('')
+    const [errorConfirmPassword, setErrorConfirmPassword] = useState('')
+    const [errorFirstName, setErrorFirstName] = useState('')
+    const [errorLastName, setErrorLastName] = useState('')
+    const [errorOccupation, seterrorOccupation] = useState('')
+    const [error, setError] = useState('')
+
 
     function handleFirstNameInput(e){
         e.preventDefault()
@@ -62,9 +70,12 @@ function Register(props){
 
     async function handleSubmit(e){
         e.preventDefault()
-        console.log(firstName, lastName, occupation, email, password, confirmPassword, bio, facebookLink, instaLink)
+        // console.log(firstName, lastName, occupation, email, password, confirmPassword, bio, facebookLink, instaLink)
         try{
-            var data = await axios.post("http://localhost:5000/photographyconnect-61141/us-central1/api/register",{
+            // var data = await axios.post("http://localhost:5000/photographyconnect-61141/us-central1/api/register",{
+                var data = await axios.post("https://us-central1-photographyconnect-61141.cloudfunctions.net/api/register",{
+                    // var data = await axios.post("/register",{
+                
                 userFirstName: firstName,
                 userLastName: lastName,
                 occupation: occupation,
@@ -78,13 +89,21 @@ function Register(props){
                 sessionStorage.setItem('AuthToken', `Bearer ${response.data.token}`)
                 console.log(response.data.token)
                 props.setLoggedIn(true)
+                
             })
             setData(data)
         }
         catch(e){
-            if(e.response.status === 400){
-              console.log("This email address is already in use with another account")  
-            }
+                // console.log("This email address is already in use with another account")
+                // console.log(e.response.data)  
+                setErrorEmail(e.response.data.email) 
+                setErrorPassword(e.response.data.password) 
+                setErrorConfirmPassword(e.response.data.confirmPassword) 
+                setErrorFirstName(e.response.data.userFirstName) 
+                setErrorLastName(e.response.data.userLastName) 
+                seterrorOccupation(e.response.data.occupation) 
+                setError(e.response.data.message)
+            //   console.log(e.response.data.email)  
         }
     }
     if(props.loggedIn === true){
@@ -103,22 +122,32 @@ function Register(props){
                     <div className="input-group mb-3">
                         <input type="text" placeholder="First Name" value={firstName} onChange={handleFirstNameInput} className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
                     </div>
+                    <p className="error">{errorFirstName}</p>
 
                     <div className="input-group mb-3">
                         <input type="text" placeholder="Last Name" value={lastName} onChange={handleLastNameInput} className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
-                    </div>  
+                        
+                    </div> 
+                    <p className="error">{errorLastName}</p>
 
                     <div className="input-group mb-3">
                         <input type="text" placeholder="Email" value={email} onChange={handleEmailInput} className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
-                    </div>   
+                        
+                    </div>  
+                    <p className="error">{errorEmail}</p>
+                    <p className="error">{error}</p>
 
                     <div className="input-group mb-3">
-                        <input type="password" placeholder="Password" value={password} onChange={handlePasswordInput} className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
+                        <input type="password" placeholder="Password (6 characters minimum)" value={password} onChange={handlePasswordInput} className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
+                        
                     </div> 
+                    <p className="error">{errorPassword}</p>
 
                     <div className="input-group mb-3 ">
                         <input type="password" placeholder="Confirm Password" value={confirmPassword} onChange={handleConfirmPasswordInput} className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
+                        
                     </div>
+                    <p className="error">{errorConfirmPassword}</p>
 
                     <div className="input-group mb-3">
                         <select value={occupation} onChange={handleOccupationInput} className="form-select" id="inputGroupSelect02">
@@ -126,7 +155,9 @@ function Register(props){
                             <option value="Photographer">Photographer</option>
                             <option value="Model">Model</option>
                         </select>
+                        
                     </div>
+                    <p className="error">{errorOccupation}</p>
 
                     <div className="input-group mb-3">
                         <textarea  value={bio} onChange={handleBioInput} placeholder="Bio" className="form-control" aria-label="With textarea"></textarea>

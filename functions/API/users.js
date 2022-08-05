@@ -33,8 +33,8 @@ exports.loginUser = function(request, response){
 //REGISTER USER TO THE "USER COLLECTION" OF FIRESTORE AND AUTHENTICATION
 exports.registerUser = function(request, response){
     const newUser = {
-        userFirstName: request.body.userfirstname,
-        userLastName: request.body.userlastname,
+        userFirstName: request.body.userFirstName,
+        userLastName: request.body.userLastName,
         occupation: request.body.occupation,
         email: request.body.email,
         password: request.body.password,
@@ -95,6 +95,7 @@ exports.registerUser = function(request, response){
 
 //UPLOAD USER PROFILE IMAGE
 exports.uploadUserImage = function (request, response){
+    console.log("Busboy upload start")
     const BusBoy = require('busboy');
     const path = require('path');
     const os = require('os');
@@ -107,11 +108,12 @@ exports.uploadUserImage = function (request, response){
     busboy.on('file', function(fieldname, file, filename, encoding, mimetype){
         try{
             if (mimetype !== 'image/jpg' && mimetype !== 'image/jpeg'){
-                return response.status(400).json({ error: "Uploads must be .jpeg file type"});
+                return response.status(400).json({ message: "Uploads must be .jpeg file type"});
         }
 
         const extension = filename.split('.')[filename.split('.').length - 1];
         imageFilename = `${Math.round(Math.random()*100000)}.${extension}`;
+        // return response.json("This is the image filename: "+imageFilename)
         console.log("Test String" + os.tmpdir());
         const filePath = path.join(os.tmpdir(), imageFilename);
         imageForUpload = {filePath, mimetype};
@@ -145,7 +147,13 @@ exports.uploadUserImage = function (request, response){
             return response.status(500).json({message: "Could not upload photo, an internal server error occurred"});
         });
     });
-    busboy.end(request.rawBody);
+    // busboy.end(request.rawBody);
+    if (request.rawBody) {
+        busboy.end(request.rawBody);
+    }
+    else {
+        request.pipe(busboy);
+    }
 }
 
 //GET USER DETAILS

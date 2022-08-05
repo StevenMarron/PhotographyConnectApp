@@ -8,17 +8,24 @@ function PostAPI(){
 
     useEffect(function(){
         async function getAllPosts(){
+            console.log("TESTING API CALL")
             const token=sessionStorage.getItem("AuthToken")
             const config={
                  headers:{
                     Authorization : `${token}` 
                 }
             }
-            var data = await axios.get("http://localhost:5000/photographyconnect-61141/us-central1/api/posts", config)
+            // var data = await axios.get("http://localhost:5000/photographyconnect-61141/us-central1/api/posts", config)
+            var data = await axios.get("https://us-central1-photographyconnect-61141.cloudfunctions.net/api/posts", config)
+            // var data = await axios.get("/posts", config)
             .then(function(response){
+            // console.log(response.data);
             setPosts([response.data])
-            // console.log([response.data]);                      
-            })        
+                                  
+            })      
+            .catch((error) => {
+                console.error(error.message);
+            });        
         }
         getAllPosts()
         // console.log(posts)
@@ -29,7 +36,7 @@ function PostAPI(){
         {posts.map(function(i, index){
             return(
                 <div key={index}>
-                    {i.map(function(j,index){
+                    {Object.values(i).map(function(j,index){
                         return(
                             <div key={i[index].postId}>
                                 <Post 
