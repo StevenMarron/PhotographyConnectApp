@@ -9,6 +9,7 @@ function UploadProfileImage(){
     const decodedToken= jwt_decode(token);
     const [userImage, setUserImage] = useState()
     const [imageUpdated, setImageUpdated] = useState(false)
+    const [error, setError] = useState();
 
     function handleImageInput(e){
         e.preventDefault()
@@ -21,7 +22,9 @@ function UploadProfileImage(){
             const token=sessionStorage.getItem("AuthToken")
             const formData = new FormData();
             formData.append('file', userImage)
-            var data = await axios.post("http://localhost:5000/photographyconnect-61141/us-central1/api/user/image", formData, {headers:{
+            // var data = await axios.post("http://localhost:5001/photographyconnect-61141/us-central1/api/user/image", formData, {headers:{
+                var data = await axios.post("https://us-central1-photographyconnect-61141.cloudfunctions.net/api/user/image", formData, {headers:{
+                    // var data = await axios.post("/user/image", formData, {headers:{
                     'Authorization' : `${token}`,
                     'Accept' : `multipart/form-data`
             }})
@@ -30,9 +33,7 @@ function UploadProfileImage(){
             })              
         }
         catch(e){
-            if(e.response.status === 400){
-                console.log("an error occurred")
-            }
+            setError(e.response.data.error)
         }
         
     }
@@ -50,7 +51,7 @@ function UploadProfileImage(){
                         <label className="form-label">Please choose an image.. <br></br>(Image must be .jpeg/.jpg and under 10MB)</label>
                         <input onChange={handleImageInput} className="form-control form-control-lg" id="formFileLg" type="file"/>
                     </div>
-                                                        
+                    <p className="error">{error}</p>                                   
                     <button onClick={handleSubmit} className="btn" type="submit">Submit</button>          
                     
                 </form>

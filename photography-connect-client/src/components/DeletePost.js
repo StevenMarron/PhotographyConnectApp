@@ -20,7 +20,9 @@ function DeletePost(props){
                     Authorization : `${token}` 
                 }
             }
-            var data = await axios.delete(`http://localhost:5000/photographyconnect-61141/us-central1/api/post/${params.postId}`, config)
+            // var data = await axios.delete(`http://localhost:5000/photographyconnect-61141/us-central1/api/post/${params.postId}`, config)
+            var data = await axios.delete(`https://us-central1-photographyconnect-61141.cloudfunctions.net/api/post/${params.postId}`, config)
+            // var data = await axios.delete(`/post/${params.postId}`, config)
             history(`/profile/${decodedToken.user_id}`)         
         }
         catch(e){

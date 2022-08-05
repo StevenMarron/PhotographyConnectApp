@@ -33,7 +33,7 @@ function UserPost(props){
                         </div>
 
                         <div className="col-lg-8 col-sm-12">
-                            <img src={props.imageUrl} className="img-fluid post-image" width="auto" height="400"/>
+                            <img src={props.imageUrl} className="img-fluid post-image" width="auto" height="400" alt={props.caption} title={props.caption}/>
                         </div>
                     </div> 
                 </div>

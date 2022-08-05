@@ -24,7 +24,8 @@ function NewPost(props){
     }
 
     async function handleSubmit(e){
-        e.preventDefault()           
+        e.preventDefault()  
+        let postId;         
         if(image == null){
                 setError("Please select an image to upload")
             }
@@ -36,17 +37,22 @@ function NewPost(props){
                         Authorization : `${token}` 
                     }
                 }
-                var data = await axios.post(`http://localhost:5000/photographyconnect-61141/us-central1/api/post/new`,
+                // var data = await axios.post(`http://localhost:5000/photographyconnect-61141/us-central1/api/post/new`,
+                var data = await axios.post(`https://us-central1-photographyconnect-61141.cloudfunctions.net/api/post/new`,
+                // var data = await axios.post(`/post/new`,
+                
                 {
                     caption: caption
                 },
                 config)
                 .then(async function(response){
-                    // console.log(response.data.id)
-                    const postId=(response.data.id)
+                    console.log(response.data.id)
+                    postId=(response.data.id)
                     const formData = new FormData();
                     formData.append('file', image)
-                    var data = await axios.post(`http://localhost:5000/photographyconnect-61141/us-central1/api/post/image/${postId}`, formData, 
+                    // var data = await axios.post(`http://localhost:5000/photographyconnect-61141/us-central1/api/post/image/${postId}`, formData, 
+                    var data = await axios.post(`https://us-central1-photographyconnect-61141.cloudfunctions.net/api/post/image/${postId}`, formData,
+                    // var data = await axios.post(`/post/image/${postId}`, formData, 
                     {headers:
                         {
                             'Authorization' : `${token}`,
@@ -57,9 +63,16 @@ function NewPost(props){
                 history(`/profile/${decodedToken.user_id}`)
             }    
             catch(e){
-                if(e.response.status === 400){
-                    console.log("an error occurred")
+                setError(e.response.data.message)
+                const token=sessionStorage.getItem("AuthToken")
+                const config={
+                        headers:{
+                        Authorization : `${token}` 
+                    }
                 }
+                var data = await axios.delete(`https://us-central1-photographyconnect-61141.cloudfunctions.net/api/post/${postId}`, config)
+                // console.log(postId)
+                
             }
         }   
     }
@@ -78,9 +91,9 @@ function NewPost(props){
                 <div className="input-group mb-3">
                     <textarea  value={caption} onChange={handleCaptionInput} placeholder="Caption..." className="form-control" aria-label="With textarea"></textarea>
                 </div> 
-                                                   
+                <p className="error">{error}</p>                             
                 <button onClick={handleSubmit} className="btn" type="submit">Submit</button>    
-                <p className="error">{error}</p>
+
                 
             </form>
         </div>          
