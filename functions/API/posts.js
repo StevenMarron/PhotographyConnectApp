@@ -82,19 +82,18 @@ exports.addPostImage = function (request, response){
 
         const extension = filename.split('.')[filename.split('.').length - 1];
         imageFilename = `${Math.round(Math.random()*100000)}.${extension}`;
-        console.log("Test String" + os.tmpdir());
+        // console.log("Test String" + os.tmpdir());
         const filePath = path.join(os.tmpdir(), imageFilename);
         imageForUpload = {filePath, mimetype};
         file.pipe(fs.createWriteStream(filePath));            
         }
-
         catch(error){
             console.error(error);
             return response.status(500).json({message: "Could not define path"});
         }
     });  
     busboy.on('finish', function(){
-        console.log("Different Test String" + imageForUpload.filePath)
+        // console.log("Different Test String" + imageForUpload.filePath)
         admin.storage().bucket().upload(imageForUpload.filePath,{
             resumable: false,
             metadata: {
@@ -141,10 +140,6 @@ exports.postOnePost = function(request, response){
         const responseNewPost = newPost;
         responseNewPost.id = doc.id;
         return response.json(responseNewPost);
-    })
-    .catch(function(error){
-        console.error(error);
-        return response.status(500).json({error: error});
     })
     .catch(function(error){
         console.error(error);

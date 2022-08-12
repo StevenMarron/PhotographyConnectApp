@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import "../App.css";
 import {useParams, useNavigate} from "react-router-dom";
 import axios from "axios";
-import DeletePost from "./DeletePost";
+import DeletePost from "../components/DeletePost";
 import jwt_decode from "jwt-decode";
 
 function EditPost(props){

@@ -10,7 +10,7 @@ module.exports = function (request, response, next){
         console.error('No Token');
         return response.status(403).json({error:"No token: access unauthorized"});
     }
-    //Using the verifyIdToken module from the admin SDK to verify the token from the request header
+    //Using the verifyIdToken module from the firebase-admin SDK to verify the token from the request header
     admin.auth().verifyIdToken(idToken).then(function(decodedToken){
         request.user = decodedToken;
         return db.collection('users').where('email', '==', request.user.email).limit(1).get();
