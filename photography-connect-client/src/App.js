@@ -7,15 +7,15 @@ import Login from "./views/Login";
 import Register from "./views/Register";
 import Footer from "./components/Footer";
 import Profile from "./views/Profile";
-import EditProfile from './components/editProfile';
-import UploadProfileImage from './components/UploadProfileImage';
-import EditPost from "./components/EditPost";
+import EditProfile from './views/EditProfile';
+import UploadProfileImage from './views/UploadProfileImage';
+import EditPost from "./views/EditPost";
 import Logout from "./components/Logout";
-import NewPost from './components/NewPost';
+import NewPost from './views/NewPost';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false)
-  const [selectedUser, setSelectedUser] = useState("Random user input")
+  // const [selectedUser, setSelectedUser] = useState("Random user input")
 
 
   useEffect(function(){
